@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>self.learning.helloworldworkflow</groupId>
+	<artifactId>hello-world-workflow</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>HelloWorldWorkflow</name>
+	<description>This is a Hello World Workflow.</description>
+
+	<properties>
+		<aws-version>1.11.59</aws-version>
+		<aspectjweaver.version>1.8.6</aspectjweaver.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javancss.source.base>all-sources</javancss.source.base>
+	</properties>
+
+	<dependencies>
+		<!-- Amazon Webservice - java Software Development Kit -->
+		<dependency>
+			<artifactId>aws-java-sdk</artifactId>
+			<groupId>com.amazonaws</groupId>
+			<version>${aws-version}</version>
+		</dependency>
+
+		<!-- Amazon Webservice Build Tool -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-swf-build-tools</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<!-- AspectJ APIs -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectjweaver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectjweaver.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.7</version>
+				<configuration>
+					<aspectLibraries>
+						<aspectLibrary>
+							<groupId>com.amazonaws</groupId>
+							<artifactId>aws-java-sdk</artifactId>
+						</aspectLibrary>
+					</aspectLibraries>
+					<complianceLevel>1.8</complianceLevel>
+					<showWeaveInfo>true</showWeaveInfo>
+					<verbose>true</verbose>
+					<sources>
+						<source>
+							<basedir>${basedir}/generated-sources/annotations</basedir>
+						</source>
+						<source>
+							<basedir>src/main/java</basedir>
+							<includes>
+								<include>**/*ActivityImpl.java</include>
+								<include>**/*WorkflowImpl.java</include>
+								<include>**/*Main.java</include>
+							</includes>
+						</source>
+					</sources>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+
+					<!-- GreeterActivitiesWorker -->
+					<execution>
+						<id>build-GreeterActivitiesWorker</id>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<archive>
+								<manifest>
+									<mainClass>self.learning.helloworldworkflow.helloactivity.GreeterActivitiesWorker</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>GreeterActivitiesWorker</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+
+					<!-- GreeterActivitiesWorker -->
+					<execution>
+						<id>build-GreeterWorkflowWorker</id>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<archive>
+								<manifest>
+									<mainClass>self.learning.helloworldworkflow.helloworldworkflow.GreeterWorkflowWorker</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>GreeterWorkflowWorker</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
