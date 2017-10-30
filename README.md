@@ -4,12 +4,13 @@ This is a simple java project which utilizes Java SDK of Amazon Webservice to cr
 
 ## About the Workflow
 
-This workflow will have 2 activities :
+This workflow will have 3 activities :
 
     1. get the name 
     2. get the greeting
     3. say the greeting
 
+These activities run synchronously.
 
 ## prerequisites
 
